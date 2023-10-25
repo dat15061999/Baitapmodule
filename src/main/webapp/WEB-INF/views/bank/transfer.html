@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Transfer money customer</title>
+    <th:block th:replace="layout/head :: head"/>
+</head>
+<body>
+<div class="container">
+    <header>
+        <nav class="navbar bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand">Transfer money customer</a>
+                <div class="d-flex" style="gap: 10px;">
+                    <a href="/banking/">
+                        <button class="btn btn-outline-light" type="button">
+                            <i class="fas fa-list-ul"></i>
+                            Customers list
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="content">
+        <form th:object="${transfer}" method="post" th:action="@{/banking/transfer/__*{senderCustomer.id}__}">
+            <div class="">
+                <div class="row mb-3 mt-3">
+                    <div class="col-lg-3">
+                        <label for="fullName" class="form-label">Full Name</label>
+                        <span type="text" class="form-control" id="fullName" th:text="*{senderCustomer.fullName}"></span>
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="email" class="form-label">Email</label>
+                        <span type="email" class="form-control" id="email" th:text="*{senderCustomer.email}"></span>
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="phone" class="form-label">Phone</label>
+                        <span type="tel" class="form-control" id="phone" th:text="*{senderCustomer.phone}"></span>
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="balance" class="form-label">Balance</label>
+                        <span type="text" class="form-control" id="balance" th:text="*{senderCustomer.balance}"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-lg-3">
+                        <label class="form-label">Recipient Name</label>
+                        <select th:object="${customers}" class="form-control" name="recipientCustomer.id">
+                            <option value="">--Choose Friend--</option>
+                            <option th:each="item : ${customers}" th:value="${item.id}"
+                                    th:text="${item.fullName}"></option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="transferAmount" class="form-label">Transfer Amount ($)</label>
+                        <input type="number" class="form-control" id="transferAmount" th:field="*{transferAmount}">
+                    </div>
+
+                    <div class="col-lg-3">
+                        <label for="fees" class="form-label">Fees (%)</label>
+                        <span type="number" class="form-control"  id="fees" th:text="*{fees}"  th:field="*{fees}"></span>
+                        <input type="hidden" id="feesAmount" th:field="*{feesAmount}">
+                        <input type="hidden" id="fees2" th:field="*{fees}">
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="totalAmount" class="form-label">Total amount of transaction</label>
+                        <span type="number" class="form-control" id="totalAmount" th:field="*{transactionAmount}"></span>
+                        <input type="hidden" id="total" th:field="*{transactionAmount}">
+                    </div>
+                </div>
+            </div>
+            <div class="row pt-3">
+                <div class="col-lg-3">
+                    <button type="submit" class="btn btn-outline-success">
+                        <i class="fas fa-exchange-alt"></i>
+                        Transfer
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<th:block th:if="${success == true}">
+    <footer class="container-fluid success">
+        <div class="container">
+            <div class="notification">
+                <p class="success" th:text="${message}"></p>
+            </div>
+        </div>
+    </footer>
+</th:block>
+
+<th:block th:if="${success == false}">
+    <footer class="container-fluid error">
+        <div class="container">
+            <div class="notification">
+                <p class="error" th:text="${message}"></p>
+            </div>
+        </div>
+    </footer>
+</th:block>
+<script>
+    document.getElementById("transferAmount").addEventListener("input", function() {
+        var transferAmount = parseFloat(this.value);
+        var feesValue = parseFloat(document.getElementById("fees").textContent);
+        var totalAmount = transferAmount + (transferAmount * (feesValue / 100));
+        var feesAmount = transferAmount * (feesValue / 100);
+        document.getElementById("totalAmount").textContent = totalAmount;
+        document.getElementById("total").setAttribute("value", totalAmount);
+        document.getElementById("feesAmount").setAttribute("value", feesAmount);
+    });
+</script>
+
+</body>
+</html>
