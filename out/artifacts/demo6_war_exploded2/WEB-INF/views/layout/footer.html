@@ -1,0 +1,9 @@
+<th:block>
+  <footer class="container-fluid" th:classappend="${success == true} ? 'success' : 'error'">
+    <div class="container">
+      <div class="notification">
+        <p th:text="${message}"></p>
+      </div>
+    </div>
+  </footer>
+</th:block>

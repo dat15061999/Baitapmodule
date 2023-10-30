@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+    <persistence-unit name="myJPAUnit">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>com.example.demo6.models.Customer</class> <!-- Thêm các entity classes của bạn -->
+        <properties>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/quanlysanpham?characterEncoding=UTF-8"/>
+            <property name="hibernate.connection.username" value="root"/>
+            <property name="hibernate.connection.password" value="0988150807Dat"/>
+        </properties>
+    </persistence-unit>
+</persistence>
